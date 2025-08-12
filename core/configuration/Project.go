@@ -1,18 +1,18 @@
 package configuration
 
 type RepoRef struct {
-	Owner string `json:"owner"`
-	Name  string `json:"name"`
+	Owner string `yaml:"owner"`
+	Name  string `yaml:"name"`
 }
 
 type ProjectRef struct {
-	Name string `json:"name"`
-	Icon string `json:"icon"`
+	Name string `yaml:"name"`
+	Icon string `yaml:"icon"`
 }
 
 type Project struct {
-	Name        string    `json:"name"`
-	Description string    `json:"description"`
-	Icon        string    `json:"icon"`
-	Repos       []RepoRef `json:"repos"`
+	Name        string    `yaml:"name"`
+	Description string    `yaml:"description"`
+	Icon        string    `yaml:"icon"`
+	Repos       []RepoRef `yaml:"repos"`
 }

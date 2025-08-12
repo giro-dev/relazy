@@ -16,6 +16,7 @@ type App struct {
 // NewApp creates a new App application struct
 func NewApp() *App {
 	config := configuration.LoadConfig()
+	_ = config.Save()
 	return &App{
 		config:    config,
 		localRepo: localRepository.LocalRepository{Basepath: config.BasePath},
@@ -30,4 +31,22 @@ func (a *App) startup(ctx context.Context) {
 
 func (a *App) ListLocalRepos(owner string) ([]string, error) {
 	return a.localRepo.GetAllReposByOwner(owner)
+}
+
+func (a *App) GetProjects() ([]configuration.ProjectRef, error) {
+	return a.config.GetAllProjects()
+}
+
+func (a *App) NewProject(name string) (*configuration.ProjectRef, error) {
+	project, err := a.config.NewProject(name)
+	if err != nil {
+		return nil, err
+	}
+	if err := a.config.Save(); err != nil {
+		return nil, err
+	}
+	return &configuration.ProjectRef{
+		Name: project.Name,
+		Icon: project.Icon,
+	}, nil
 }

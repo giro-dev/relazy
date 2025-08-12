@@ -31,7 +31,7 @@ func configPath() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(usr.HomeDir, ".config", "relazy.yaml"), nil
+	return filepath.Join(usr.HomeDir, ".config", "relazy", "config.yaml"), nil
 }
 
 func (c *Config) Load() error {
@@ -65,7 +65,11 @@ func (c *Config) CreateProject(name, description, icon string, repos []RepoRef) 
 		Icon:        icon,
 		Repos:       repos,
 	}
-	// Here you can add logic to persist the project if needed
+	c.Projects = append(c.Projects, *project)
+	err := c.Save()
+	if err != nil {
+		return nil, err
+	}
 	return project, nil
 }
 
@@ -87,4 +91,16 @@ func (c *Config) Project(name string) (*Project, error) {
 		}
 	}
 	return nil, errors.New("Project not found")
+}
+
+func (c *Config) NewProject(name string) (Project, error) {
+	project := Project{
+		Name:        name,
+		Description: "",
+		Icon:        "",
+		Repos:       []RepoRef{},
+	}
+	c.Projects = append(c.Projects, project)
+	return project, nil
+
 }
