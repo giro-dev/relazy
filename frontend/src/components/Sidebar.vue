@@ -42,11 +42,12 @@ function selectProject(project) {
 
 <template>
   <aside class="sidebar">
-    <ul>
+    <ul class="divide-y divide-gray-200">
       <li
           v-for="project in projects"
           :key="project.id"
           :class="{ selected: project.id === props.selected?.id }"
+          class="p-2 hover:bg-gray-50 cursor-pointer"
           @click="selectProject(project)"
       >
         <span>{{ project.Icon }}</span>
@@ -55,7 +56,10 @@ function selectProject(project) {
       <li>
         <div v-if="showInput">
           <input v-model="newProjectName" placeholder="Project name"/>
-          <button @click="createProject">Create</button>
+          <div style="display: flex; gap: 0.5rem;">
+            <button @click="createProject">Create</button>
+            <button @click="showInput = false">X</button>
+          </div>
         </div>
         <div v-else>
           <button @click="showInput = true">New Project</button>
@@ -67,12 +71,7 @@ function selectProject(project) {
 
 <style>
 .sidebar {
-  width: 250px;
-  background: #5a6e81;
+  width: 75px;
   padding: 1rem;
-}
-
-.selected {
-  background: #87bfd0;
 }
 </style>

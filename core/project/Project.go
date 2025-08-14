@@ -1,4 +1,4 @@
-package configuration
+package project
 
 type RepoRef struct {
 	Owner string `yaml:"owner"`

@@ -8,7 +8,7 @@ defineProps({
 
 <template>
   <div class="p-4">
-    <h1 class="text-xl font-bold mb-4">{{ project.name }}</h1>
-    <RepoList :basePath="project.path" />
+    <h1 class="text-xl font-bold mb-4">{{ project.Name }}</h1>
+    <RepoList :projectId="project.Name" />
   </div>
 </template>

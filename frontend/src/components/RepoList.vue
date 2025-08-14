@@ -3,7 +3,7 @@ import { ref, onMounted, watch } from 'vue'
 import { ListLocalRepos } from '../../wailsjs/go/main/App'
 
 const props = defineProps({
-  basePath: String
+  projectId: String
 })
 
 const repos = ref([])
@@ -11,12 +11,12 @@ const loading = ref(false)
 
 async function loadRepos() {
   loading.value = true
-  repos.value = await ListLocalRepos(props.basePath)
+  repos.value = await ListLocalRepos(props.projectId)
   loading.value = false
 }
 
 onMounted(loadRepos)
-watch(() => props.basePath, loadRepos)
+watch(() => props.projectId, loadRepos)
 </script>
 
 <template>

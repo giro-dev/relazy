@@ -3,14 +3,14 @@ package main
 import (
 	"context"
 	"relazy/core/configuration"
-	"relazy/core/localRepository"
+	"relazy/core/repoRepository"
 )
 
 // App struct
 type App struct {
 	ctx       context.Context
 	config    configuration.Config
-	localRepo localRepository.LocalRepository
+	localRepo repoRepository.RepoRepository
 }
 
 // NewApp creates a new App application struct
@@ -19,7 +19,7 @@ func NewApp() *App {
 	_ = config.Save()
 	return &App{
 		config:    config,
-		localRepo: localRepository.LocalRepository{Basepath: config.BasePath},
+		localRepo: repoRepository.RepoRepository{BasePath: config.BasePath},
 	}
 }
 
@@ -29,8 +29,16 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-func (a *App) ListLocalRepos(owner string) ([]string, error) {
-	return a.localRepo.GetAllReposByOwner(owner)
+func (a *App) ListProjectRepos(projectName string) ([]string, error) {
+	project, err := a.config.GetProjectByName(projectName)
+	if err != nil {
+		return nil, err
+	}
+	if project == nil {
+		return nil, configuration.ErrProjectNotFound
+	}
+	return a.localRepo.GetAllReposByProject(project)
+
 }
 
 func (a *App) GetProjects() ([]configuration.ProjectRef, error) {
